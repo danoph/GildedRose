@@ -184,5 +184,15 @@ describe GildedRose do
         expect(item.quality).to eq(4)
       end
     end
+
+    describe 'another conjured item' do
+      let(:item) { subject.items[6] }
+
+      it 'decreases twice as fast' do
+        subject.update_quality
+        expect(item.sell_in).to eq(3)
+        expect(item.quality).to eq(6)
+      end
+    end
   end
 end

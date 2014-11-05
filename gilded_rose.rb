@@ -1,6 +1,7 @@
 require './item.rb'
 
 class GildedRose
+  attr_reader :items
 
   @items = []
 
@@ -12,6 +13,7 @@ class GildedRose
     @items << Item.new("Sulfuras, Hand of Ragnaros", 0, 80)
     @items << Item.new("Backstage passes to a TAFKAL80ETC concert", 15, 20)
     @items << Item.new("Conjured Mana Cake", 3, 6)
+    @items << Item.new("Conjured Item", 4, 8)
   end
 
   def update_quality
@@ -19,7 +21,9 @@ class GildedRose
     for i in 0..(@items.size-1)
       if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
         if (@items[i].quality > 0)
-          if (@items[i].name != "Sulfuras, Hand of Ragnaros")
+          if @items[i].name =~ /conjured/i
+            @items[i].quality = @items[i].quality - 2
+          elsif (@items[i].name != "Sulfuras, Hand of Ragnaros")
             @items[i].quality = @items[i].quality - 1
           end
         end
