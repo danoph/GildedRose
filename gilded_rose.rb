@@ -17,19 +17,6 @@ class GildedRose
   end
 
   def update_quality
-    @items.each do |item|
-      update_item_quality(item)
-      update_item_sell_in(item)
-    end
-  end
-
-  def update_item_quality(item)
-    item.quality += item.quality_adjustment if item.quality + item.quality_adjustment >= 0 && item.quality + item.quality_adjustment <= 50
-  end
-
-  def update_item_sell_in(item)
-    if (item.name != "Sulfuras, Hand of Ragnaros")
-      item.sell_in = item.sell_in - 1;
-    end
+    @items.each{|item| item.update }
   end
 end

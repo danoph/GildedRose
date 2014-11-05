@@ -8,7 +8,22 @@ class Item
   end
 end
 
-class NormalItem < Item
+class StoreItem < Item
+  def update
+    adjust_quality
+    adjust_sell_in
+  end
+
+  def adjust_quality
+    self.quality += quality_adjustment if quality + quality_adjustment >= 0 && quality + quality_adjustment <= 50
+  end
+
+  def adjust_sell_in
+    self.sell_in = sell_in - 1
+  end
+end
+
+class NormalItem < StoreItem
   def quality_adjustment
     adjust = -1
     adjust -= 1 if sell_in <= 0
@@ -16,7 +31,7 @@ class NormalItem < Item
   end
 end
 
-class AgedBrie < Item
+class AgedBrie < StoreItem
   def quality_adjustment
     1
   end
@@ -28,17 +43,12 @@ class ConjuredItem < NormalItem
   end
 end
 
-class SulfurasItem < Item
-  def quality_adjustment
-    0
-  end
-
-  def quality
-    80
-  end
+class SulfurasItem < StoreItem
+  def adjust_quality; end
+  def adjust_sell_in; end
 end
 
-class BackstagePass < Item
+class BackstagePass < StoreItem
   def quality_adjustment
     adjust = 1
 
