@@ -17,54 +17,55 @@ class GildedRose
   end
 
   def update_quality
+    @items.each do |item|
+      update_item_quality_and_sell_in(item)
+    end
+  end
 
-    for i in 0..(@items.size-1)
-      if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-        if (@items[i].quality > 0)
-          if @items[i].name =~ /conjured/i
-            @items[i].quality = @items[i].quality - 2
-          elsif (@items[i].name != "Sulfuras, Hand of Ragnaros")
-            @items[i].quality = @items[i].quality - 1
-          end
-        end
-      else
-        if (@items[i].quality < 50)
-          @items[i].quality = @items[i].quality + 1
-          if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].sell_in < 11)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-            if (@items[i].sell_in < 6)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-          end
-        end
+  def update_item_quality_and_sell_in(item)
+    update_item_quality(item)
+    update_item_sell_in(item)
+  end
+
+  def update_item_quality(item)
+    if item.name =~ /conjured/i
+      subtract_quality(item, 2)
+    elsif item.name == "Sulfuras, Hand of Ragnaros"
+      # dont update
+    elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
+      add_quality(item)
+
+      if (item.sell_in < 11)
+        add_quality(item)
       end
-      if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-        @items[i].sell_in = @items[i].sell_in - 1;
+      if (item.sell_in < 6)
+        add_quality(item)
       end
-      if (@items[i].sell_in < 0)
-        if (@items[i].name != "Aged Brie")
-          if (@items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].quality > 0)
-              if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-                @items[i].quality = @items[i].quality - 1
-              end
-            end
-          else
-            @items[i].quality = @items[i].quality - @items[i].quality
-          end
-        else
-          if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
-          end
-        end
+      if item.sell_in <= 0
+        item.quality = 0
+      end
+    elsif item.name == "Aged Brie"
+      add_quality(item)
+    else
+      subtract_quality(item)
+
+      if (item.sell_in <= 0)
+        subtract_quality(item)
       end
     end
   end
 
+  def add_quality(item, amount=1)
+    item.quality += amount if item.quality < 50
+  end
+
+  def subtract_quality(item, amount=1)
+    item.quality = item.quality - amount if item.quality > 0
+  end
+
+  def update_item_sell_in(item)
+    if (item.name != "Sulfuras, Hand of Ragnaros")
+      item.sell_in = item.sell_in - 1;
+    end
+  end
 end

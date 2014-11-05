@@ -3,6 +3,17 @@ require "rspec"
 
 describe GildedRose do
   describe '#update_quality' do
+    describe 'all items' do
+      it 'quality does not go below 0' do
+        subject.items.each do |item|
+          50.times do |i|
+            subject.update_quality
+          end
+          expect(item.quality).to be >= 0
+        end
+      end
+    end
+
     describe 'dexterity vest' do
       let(:item) { subject.items[0] }
 
@@ -10,13 +21,6 @@ describe GildedRose do
         subject.update_quality
         expect(item.sell_in).to eq(9)
         expect(item.quality).to eq(19)
-      end
-
-      it 'quality does not go below 0' do
-        18.times do |i|
-          subject.update_quality
-        end
-        expect(item.quality).to eq(0)
       end
 
       it 'sell by date can go negative' do
@@ -77,6 +81,8 @@ describe GildedRose do
       let(:item) { subject.items[3] }
 
       it 'never decreases' do
+        expect(item.quality).to eq(80)
+
         20.times do
           subject.update_quality
           expect(item.sell_in).to eq(0)
@@ -157,7 +163,7 @@ describe GildedRose do
             end
           end
 
-          it 'increases quality by 3' do
+          it 'quality is 0' do
             sell_in = 0
             quality = 50
 
