@@ -51,17 +51,9 @@ end
 class BackstagePass < StoreItem
   def quality_adjustment
     adjust = 1
-
-    if (sell_in < 11)
-      adjust += 1
-    end
-    if (sell_in < 6)
-      adjust += 1
-    end
-    if sell_in <= 0
-      adjust = -quality
-    end
-
+    adjust += 1 if sell_in <= 10
+    adjust += 1 if sell_in <= 5
+    adjust = -quality if sell_in <= 0
     adjust
   end
 end
