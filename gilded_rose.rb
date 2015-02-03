@@ -6,12 +6,16 @@ class NormalItem < Item
     update_sell_in
   end
 
+  def adjustment_multiplier
+    1
+  end
+
   def expired_quality_adjustment
-    -2
+    adjustment_multiplier * -2
   end
 
   def normal_quality_adjustment
-    -1
+    adjustment_multiplier * -1
   end
 
   def quality_adjustment
@@ -33,14 +37,14 @@ class NormalItem < Item
 end
 
 class ConjuredItem < NormalItem
-  def quality_adjustment
-    super * 2
+  def adjustment_multiplier
+    2
   end
 end
 
 class AgedBrieItem < NormalItem
-  def quality_adjustment
-    -super
+  def adjustment_multiplier
+    -1
   end
 end
 
