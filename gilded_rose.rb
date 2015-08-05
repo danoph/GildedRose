@@ -9,7 +9,7 @@ class ItemFactory
       BackstagePass.new(item)
     when "Sulfuras, Hand of Ragnaros"
       Sulfuras.new(item)
-    when "Conjured Mana Cake"
+    when /Conjured/i
       ConjuredItem.new(item)
     else
       MyItem.new(item)
@@ -25,13 +25,13 @@ class MyItem
   end
 
   def update
-    update_sell_in
     update_quality
+    update_sell_in
   end
 
   def update_quality
     rem_quality
-    rem_quality if @item.sell_in < 0
+    rem_quality if @item.sell_in < 1
   end
 
   def update_sell_in
@@ -56,11 +56,11 @@ end
 
 class BackstagePass < MyItem
   def update_quality
-    if @item.sell_in < 0
+    if @item.sell_in < 1
       @item.quality = 0
-    elsif @item.sell_in < 5
+    elsif @item.sell_in <= 5
       add_quality 3
-    elsif @item.sell_in < 10
+    elsif @item.sell_in <= 10
       add_quality 2
     else
       add_quality
