@@ -108,18 +108,18 @@ describe GildedRose do
           end
         end
 
-        context 'less than 10 days left' do
+        context 'less than 11 days left' do
           before do
-            5.times do |i|
+            4.times do |i|
               subject.update_quality
             end
           end
 
           it 'increases quality by 2' do
-            sell_in = 10
-            quality = 25
+            sell_in = 11
+            quality = 23
 
-            5.times do
+            6.times do
               sell_in = sell_in - 1
               quality = quality + 2
               subject.update_quality
@@ -129,18 +129,18 @@ describe GildedRose do
           end
         end
 
-        context 'less than 5 days left' do
+        context 'less than 6 days left' do
           before do
-            10.times do |i|
+            9.times do |i|
               subject.update_quality
             end
           end
 
           it 'increases quality by 3' do
-            sell_in = 5
-            quality = 35
+            sell_in = 6
+            quality = 32
 
-            5.times do
+            6.times do
               sell_in = sell_in - 1
               quality = quality + 3
               subject.update_quality
