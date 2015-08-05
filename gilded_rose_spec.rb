@@ -175,7 +175,7 @@ describe GildedRose do
       end
     end
 
-    describe 'conjured mana cake' do
+    describe 'conjured mana cake', pending: true do
       let(:item) { subject.items[5] }
 
       it 'decreases twice as fast' do
