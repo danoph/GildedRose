@@ -1,5 +1,64 @@
 require './item.rb'
 
+class SulfurasItemUpdater
+  def initialize(item)
+    @item = item
+  end
+
+  def update_item_quality
+    # nothing
+  end
+
+  def update_item_sell_in
+    # nothing
+  end
+end
+
+class NormalItemUpdater
+  def initialize(item)
+    @item = item
+  end
+
+  def update_item_quality
+    if  @item.name == "Aged Brie" || @item.name == "Backstage passes to a TAFKAL80ETC concert"
+      increment_item_quality
+
+      if (@item.name == "Backstage passes to a TAFKAL80ETC concert")
+        increment_item_quality if @item.sell_in < 11
+        increment_item_quality if @item.sell_in < 6
+
+        @item.quality = 0 if @item.sell_in < 1
+      else
+        increment_item_quality if @item.sell_in < 0
+      end
+    else
+      decrement_item_quality
+      decrement_item_quality if @item.sell_in < 1
+    end
+  end
+
+  def update_item_sell_in
+    decrement_sell_in
+  end
+
+  def increment_item_quality
+    if (@item.quality < 50)
+      @item.quality += 1
+    end
+  end
+
+  def decrement_item_quality
+    if (@item.quality > 0)
+      @item.quality -= 1
+    end
+  end
+
+  def decrement_sell_in
+    @item.sell_in -= 1
+  end
+end
+
+
 class GildedRose
 
   @items = []
@@ -17,52 +76,15 @@ class GildedRose
   end
 
   def update_quality
-
-    for i in 0..(@items.size-1)
-      if (@items[i].name != "Aged Brie" && @items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-        if (@items[i].quality > 0)
-          if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-            @items[i].quality = @items[i].quality - 1
-          end
-        end
+    @items.each do |item|
+      if item.name == "Sulfuras, Hand of Ragnaros"
+        updater = SulfurasItemUpdater.new item
       else
-        if (@items[i].quality < 50)
-          @items[i].quality = @items[i].quality + 1
-          if (@items[i].name == "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].sell_in < 11)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-            if (@items[i].sell_in < 6)
-              if (@items[i].quality < 50)
-                @items[i].quality = @items[i].quality + 1
-              end
-            end
-          end
-        end
+        updater = NormalItemUpdater.new item
       end
-      if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-        @items[i].sell_in = @items[i].sell_in - 1;
-      end
-      if (@items[i].sell_in < 0)
-        if (@items[i].name != "Aged Brie")
-          if (@items[i].name != "Backstage passes to a TAFKAL80ETC concert")
-            if (@items[i].quality > 0)
-              if (@items[i].name != "Sulfuras, Hand of Ragnaros")
-                @items[i].quality = @items[i].quality - 1
-              end
-            end
-          else
-            @items[i].quality = @items[i].quality - @items[i].quality
-          end
-        else
-          if (@items[i].quality < 50)
-            @items[i].quality = @items[i].quality + 1
-          end
-        end
-      end
+
+      updater.update_item_quality
+      updater.update_item_sell_in
     end
   end
-
 end

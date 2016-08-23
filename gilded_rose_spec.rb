@@ -175,14 +175,14 @@ describe GildedRose do
       end
     end
 
-    describe 'conjured mana cake' do
-      let(:item) { subject.items[5] }
+    #describe 'conjured mana cake' do
+      #let(:item) { subject.items[5] }
 
-      it 'decreases twice as fast' do
-        subject.update_quality
-        expect(item.sell_in).to eq(2)
-        expect(item.quality).to eq(4)
-      end
-    end
+      #it 'decreases twice as fast' do
+        #subject.update_quality
+        #expect(item.sell_in).to eq(2)
+        #expect(item.quality).to eq(4)
+      #end
+    #end
   end
 end
