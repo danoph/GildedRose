@@ -1,5 +1,4 @@
 class Item
-
   attr_accessor :name, :sell_in, :quality
 
   def initialize(name, sell_in, quality)
@@ -9,50 +8,40 @@ class Item
   end
 
   def increase_quality
-    if quality < 50
-      self.quality = quality + 1
-    end
+    self.quality += 1 if quality < 50
   end
 
   def decrease_quality
-    if quality > 0
-      self.quality = quality - 1
-    end
+    self.quality -= 1 if quality > 0
   end
 
   def decrease_sell_in
-    self.sell_in = sell_in - 1
+    self.sell_in -= 1
   end
 
   def update_quality
     decrease_quality
-
-    if sell_in <= 0
-      decrease_quality
-    end
-
+    decrease_quality if sell_in <= 0
     decrease_sell_in
+  end
+
+  def reset_quality
+    self.quality = 0
   end
 end
 
 class AgedBrie < Item
   def update_quality
     increase_quality
-
-    if sell_in <= 0
-      increase_quality
-    end
-
+    increase_quality if sell_in <= 0
     decrease_sell_in
   end
 end
 
 class DexterityVest < Item
-
 end
 
 class MongooseElixir < Item
-
 end
 
 class Sulfuras < Item
@@ -66,23 +55,12 @@ end
 class BackstagePass < Item
   def update_quality
     increase_quality
-
-    if sell_in < 11
-      increase_quality
-    end
-
-    if sell_in < 6
-      increase_quality
-    end
-
-    if sell_in <= 0
-      self.quality = 0
-    end
-
+    increase_quality if sell_in < 11
+    increase_quality if sell_in < 6
+    reset_quality if sell_in <= 0
     decrease_sell_in
   end
 end
 
 class ManaCake < Item
-
 end
