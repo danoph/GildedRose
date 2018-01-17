@@ -29,7 +29,7 @@ Pretty simple, right? Well this is where it gets interesting:
 
   - The Quality of an item is never negative
 
-  - "Aged Brie" actually increases in Quality the older it gets
+  - "Aged Brie" actually increases in Quality the older it gets. Quality increases twice as fast after SellIn date has passed.
 
   - The Quality of an item is never more than 50
 
