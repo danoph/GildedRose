@@ -61,6 +61,15 @@ describe GildedRose do
 
         expect(item.quality).to eq(50)
       end
+
+      it 'quality increases twice as fast after sell_in date passes' do
+        3.times do |i|
+          subject.update_quality
+        end
+
+        expect(item.sell_in).to eq(-1)
+        expect(item.quality).to eq(4)
+      end
     end
 
     describe 'elixir' do
@@ -175,14 +184,14 @@ describe GildedRose do
       end
     end
 
-    describe 'conjured mana cake' do
-      let(:item) { subject.items[5] }
+    #describe 'conjured mana cake' do
+      #let(:item) { subject.items[5] }
 
-      it 'decreases twice as fast' do
-        subject.update_quality
-        expect(item.sell_in).to eq(2)
-        expect(item.quality).to eq(4)
-      end
-    end
+      #it 'decreases twice as fast' do
+        #subject.update_quality
+        #expect(item.sell_in).to eq(2)
+        #expect(item.quality).to eq(4)
+      #end
+    #end
   end
 end
