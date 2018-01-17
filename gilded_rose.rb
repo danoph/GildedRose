@@ -41,6 +41,9 @@ class GildedRose
     @items.each do |item|
       if item.name == "Aged Brie"
         increase_quality(item)
+        if (item.sell_in <= 0)
+          increase_quality(item)
+        end
       elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
         increase_quality(item)
         if (item.sell_in < 11)
@@ -49,19 +52,13 @@ class GildedRose
         if (item.sell_in < 6)
           increase_quality(item)
         end
+        if item.sell_in <= 0
+          item.quality = 0
+        end
       else
         decrease_quality(item)
-      end
-
-      if (item.sell_in <= 0)
-        if (item.name == "Aged Brie")
-            increase_quality(item)
-        else
-          if (item.name == "Backstage passes to a TAFKAL80ETC concert")
-            item.quality = item.quality - item.quality
-          else
-            decrease_quality(item)
-          end
+        if (item.sell_in <= 0)
+          decrease_quality(item)
         end
       end
 
