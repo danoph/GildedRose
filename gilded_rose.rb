@@ -16,7 +16,7 @@ class GildedRose
     @items << Item.new("Conjured Mana Cake", 3, 6)
   end
 
-  def increese_quality(item)
+  def increase_quality(item)
     if (item.quality < 50)
       item.quality = item.quality + 1
     end
@@ -30,38 +30,43 @@ class GildedRose
     end
   end
 
+  def decrease_sell_in(item)
+    if (item.name != "Sulfuras, Hand of Ragnaros")
+      item.sell_in = item.sell_in - 1;
+    end
+  end
+
   def update_quality
 
     @items.each do |item|
-      if (item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert")
-          decrease_quality(item)
+      if item.name == "Aged Brie"
+        increase_quality(item)
+      elsif item.name == "Backstage passes to a TAFKAL80ETC concert"
+        increase_quality(item)
+        if (item.sell_in < 11)
+          increase_quality(item)
+        end
+        if (item.sell_in < 6)
+          increase_quality(item)
+        end
       else
-        increese_quality(item)
-        if (item.name == "Backstage passes to a TAFKAL80ETC concert")
-          if (item.sell_in < 11)
-            increese_quality(item)
-          end
-          if (item.sell_in < 6)
-            increese_quality(item)
-          end
-        end
+        decrease_quality(item)
       end
 
-      if (item.name != "Sulfuras, Hand of Ragnaros")
-        item.sell_in = item.sell_in - 1;
-      end
-
-      if (item.sell_in < 0)
-        if (item.name != "Aged Brie")
-          if (item.name != "Backstage passes to a TAFKAL80ETC concert")
-              decrease_quality(item)
-          else
-            item.quality = item.quality - item.quality
-          end
+      if (item.sell_in <= 0)
+        if (item.name == "Aged Brie")
+            increase_quality(item)
         else
-          increese_quality(item)
+          if (item.name == "Backstage passes to a TAFKAL80ETC concert")
+            item.quality = item.quality - item.quality
+          else
+            decrease_quality(item)
+          end
         end
       end
+
+      decrease_sell_in(item)
+
     end
   end
 
